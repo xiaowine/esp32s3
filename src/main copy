@@ -1,0 +1,60 @@
+#include <ConfigWifi.h>
+#include <ForzaDataParser.h>
+#include <IoTool.h>
+
+IoTool ioTool;
+ConfigWifi configWifi;
+ForzaDataParser parser(5300);
+unsigned long lastPrintTime = 0;
+const unsigned long printInterval = 500;
+
+void setup()
+{
+  Serial.begin(14400);
+  configWifi.begin();
+  if (!configWifi.useWeb)
+  {
+    parser.begin();
+    ioTool.setInterrupt(0, CHANGE);
+  }
+}
+
+void loop()
+{
+  if (configWifi.useWeb)
+  {
+    configWifi.loop();
+  }
+  else
+  {
+    parser.update();
+    unsigned long currentTime = millis();
+
+    // Check if it's time to print the data
+    if (currentTime - lastPrintTime >= printInterval)
+    {
+      const ForzaData &data = parser.getData();
+      if (data.IsRaceOn)
+      {
+        String output = "=======================\n";
+        output += "速度: " + String(data.Speed * 3.6) + "\n"; // Convert m/s to km/h
+        output += "转速: " + String(data.CurrentEngineRpm) + "\n";
+        output += "转速比: " + String(data.CurrentEngineRpm / data.EngineMaxRpm) + "\n";
+        output += "挡位: " + String(data.Gear) + "\n";
+        output += "车辆ID: " + String(data.CarOrdinal) + "\n";
+        output += "车辆等级: " + String(data.CarClass) + "\n";
+        output += "传动系统: " + String(data.DrivetrainType) + "\n";
+        output += "汽车性能: " + String(data.CarPerformanceIndex) + "\n";
+        output += "扭矩: " + String(data.Torque) + "\n";
+        output += "油门: " + String(data.Accel) + "\n";
+        output += "刹车: " + String(data.Brake) + "\n";
+        Serial.print(output);
+      }
+      lastPrintTime = currentTime; // Update the last print time
+    }
+    if (ioTool.checkInterrupt(0))
+    {
+      Serial.println("Interrupt detected on pin 2");
+    }
+  }
+}
