@@ -1,6 +1,6 @@
-#include <lvgl.h>
+#include <page/init_page.h>
 #include <string>
-#include <ConfigWifi/ConfigWifi.h>
+#include <config_wifi/ConfigWifi.h>
 
 ConfigWifi configWifi;
 lv_obj_t *scr;

@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <lvgl.h>
 #include <TFT_eSPI.h>
-#include <ForzaDataParser/ForzaDataParser.h>
-#include <Font/misans_bold_14.c>
-#include <Page/Init_page.h>
+#include <forza_data_parser/ForzaDataParser.h>
+#include <font/misans_bold_14.c>
+#include <page/init_page.h>
 
 /* WiFi credentials */
 const char *ssid = "Xiaomi_D6AB";
