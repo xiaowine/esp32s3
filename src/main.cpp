@@ -1,26 +1,29 @@
 #include <Arduino.h>
-#include <WiFi.h>
 #include <lvgl.h>
 #include <TFT_eSPI.h>
-#include <ForzaDataParser.h>
+#include <ForzaDataParser/ForzaDataParser.h>
+#include <Font/misans_bold_14.c>
+#include <Page/Init_page.h>
 
 /* WiFi credentials */
 const char *ssid = "Xiaomi_D6AB";
 const char *password = "e42e2492";
-#define TFT_HOR_RES 320
-#define TFT_VER_RES 240
+#define TFT_HOR_RES 240
+#define TFT_VER_RES 320
 #define DRAW_BUF_SIZE (TFT_HOR_RES * TFT_VER_RES / 10 * (LV_COLOR_DEPTH / 8))
 uint32_t draw_buf[DRAW_BUF_SIZE / 4];
 
 ForzaDataParser parser(5300);
 unsigned long lastPrintTime = 0;
 const unsigned long printInterval = 500;
+
 ForzaData data;
 String a;
 
 lv_obj_t *label;
 lv_obj_t *label1;
 lv_obj_t *arc;
+
 void setup_wifi()
 {
     lv_label_set_text(label, "Connecting to WiFi...");
@@ -75,36 +78,38 @@ void setup()
 {
     Serial.begin(115200);
     lv_init();
+    LV_FONT_DECLARE(misans_bold_14);
 
     lv_display_t *display = lv_tft_espi_create(TFT_HOR_RES, TFT_VER_RES, draw_buf, sizeof(draw_buf));
-    lv_theme_t *th = lv_theme_default_init(display, lv_color_hex(0x00BFFF), lv_color_hex(0x87CEEB), false, &lv_font_montserrat_14);
+    lv_theme_t *th = lv_theme_default_init(display, lv_color_hex(0x00BFFF), lv_color_hex(0x87CEEB), false, &misans_bold_14);
     lv_disp_set_theme(display, th);
+    lv_obj_t *initPage = createInitPage();
+    lv_scr_load(initPage);
+    // label = lv_label_create(lv_screen_active());
+    // lv_label_set_text(label, "Initializing...");
+    // lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
 
-    label = lv_label_create(lv_screen_active());
-    lv_label_set_text(label, "Initializing...");
-    lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
+    // // /*Create an Arc*/
+    // // arc = lv_arc_create(lv_screen_active());
+    // // lv_obj_set_size(arc, 80, 80);
+    // // lv_arc_set_rotation(arc, 135);
+    // // lv_arc_set_bg_angles(arc, 0, 270);
+    // // lv_arc_set_value(arc, 10);
 
-    /*Create an Arc*/
-    arc = lv_arc_create(lv_screen_active());
-    lv_obj_set_size(arc, 80, 80);
-    lv_arc_set_rotation(arc, 135);
-    lv_arc_set_bg_angles(arc, 0, 270);
-    lv_arc_set_value(arc, 10);
+    // // label1 = lv_label_create(lv_screen_active());
+    // // lv_label_set_text_fmt(label1, "%" LV_PRId32 "%%", 10);
+    // // lv_obj_align_to(label1, arc, LV_ALIGN_CENTER, 0, 0);
 
-    label1 = lv_label_create(lv_screen_active());
-    lv_label_set_text_fmt(label1, "%" LV_PRId32 "%%", 10);
-    lv_obj_align_to(label1, arc, LV_ALIGN_CENTER, 0, 0);
-
-    setup_wifi();
-    parser.begin();
-    lv_timer_create(updateText, 0, NULL);
-    lv_timer_create(updateDate, 0, NULL);
+    // setup_wifi();
+    // // parser.begin();
+    // // lv_timer_create(updateText, 0, NULL);
+    // // lv_timer_create(updateDate, 0, NULL);
 }
 
 void loop()
 {
     static long last_time = millis();
-    parser.update();
+    // parser.update();
     lv_task_handler(); // Ensure this is called
     delay(5);
     lv_tick_inc(5);

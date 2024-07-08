@@ -56,7 +56,13 @@
 		"chrono": "c",
 		"thread": "cpp",
 		"main copy": "c",
-		"ratio": "c"
+		"ratio": "c",
+		"chinese.c": "cpp",
+		"misans-bold-18.c": "cpp",
+		"misans_bold_14.c": "cpp",
+		"list": "cpp",
+		"condition_variable": "cpp",
+		"mutex": "cpp"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }
