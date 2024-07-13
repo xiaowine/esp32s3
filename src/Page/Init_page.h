@@ -4,6 +4,6 @@
 
 #include <lvgl.h>
 
-lv_obj_t *createInitPage();
+lv_obj_t *create_init_page();
 
 #endif // INIT_PAGE_H

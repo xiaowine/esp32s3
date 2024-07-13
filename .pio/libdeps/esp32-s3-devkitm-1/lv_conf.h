@@ -16,6 +16,7 @@
 
 #ifndef LV_CONF_H
 #define LV_CONF_H
+#define MAIN_COLOR 0x42b983
 
 /*If you need to include anything here, do it inside the `__ASSEMBLY__` guard */
 #if  0 && defined(__ASSEMBLY__)
