@@ -62,7 +62,8 @@
 		"misans_bold_14.c": "cpp",
 		"list": "cpp",
 		"condition_variable": "cpp",
-		"mutex": "cpp"
+		"mutex": "cpp",
+		"misans_bold_18.c": "cpp"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }
